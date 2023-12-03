@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>App Sencilla en Docker - Kubernetes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/estilo.css" rel="stylesheet" />
+    </head>
+    <body>
+
+        <div class="encabezado">
+            <h1>App Sencilla en Docker - Kubernetes Hola</h1>
+        </div>
+        <div>
+            <div class="mas-grande negrita margin-bottom-10 margin-top-10">Elija una opción</div>
+            <div>
+                <div class="boton boton-azul peticion margin-right-10" data-vista="ver-usuarios" data-titulo="Ver usuarios">
+                    Ver usuarios
+                </div>
+                <div class="boton boton-azul peticion" data-vista="crear-usuario.html" data-titulo="Crear usuario">
+                    Crear usuario
+                </div>
+
+            </div>
+        </div>
+        <div class="linea"></div>
+        <div id="contenido">
+            <!-- Aquí va el contenido cambiado -->
+        </div>
+        <footer>
+            <div class="inline-block">Noé Guerrero Ascencio</div>
+        </footer>
+        <script>
+            var raiz = "/";
+            
+            window.addEventListener('popstate', function (event) {
+                ajax(event.state, "GET", function (respuesta) {
+                    document.getElementById("contenido").innerHTML = respuesta;
+                });
+            });
+            /**
+             * 
+             * @param {String} url
+             * @param {String} metodo
+             * @param {function} funcion
+             * @returns {undefined}
+             */
+            function ajax(url, metodo, funcion) {
+                const xhr = new XMLHttpRequest();
+                xhr.open(metodo, url);
+                xhr.send();
+                xhr.onload = function (e) {
+                    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                        funcion(xhr.responseText);
+                    }
+                };
+            }
+            function cambiarURL(vista, title) {
+                let urlActual, urlPartes, nuevaUrl;
+                urlActual = window.location.href;
+                urlPartes = urlActual.split("/");
+                nuevaUrl = "";
+                urlPartes.forEach(function (parte, cont) {
+                    if (cont !== urlPartes.length - 1) {
+                        nuevaUrl += parte + "/";
+                    }
+                })
+                
+                nuevaUrl += vista;
+                window.history.pushState(vista, title, nuevaUrl);
+            }
+            
+            document.querySelectorAll(".peticion").forEach(function (elemento) {
+                elemento.addEventListener("click", function (event) {
+                    let vista = event.currentTarget.getAttribute("data-vista");
+                    let titulo = event.currentTarget.getAttribute("data-titulo");
+                    cambiarURL(vista, titulo);
+                    ajax(vista, "GET", function (respuesta) {
+                        document.getElementById("contenido").innerHTML = respuesta;
+                    });
+                });
+            });
+            (function(){
+                //Verificamos la URL
+                let url, urlPartes, ultima;
+                url = window.location.href;
+                urlPartes = url.split(raiz);
+                ultima = urlPartes[urlPartes.length - 1];
+                if(ultima === "" || ultima === "index.php" || ultima === "home.html"){
+                    return;
+                }
+                //Si continua es que solicita alguna vista
+                ajax(ultima, "GET", function (respuesta) {
+                    document.getElementById("contenido").innerHTML = respuesta;
+                });
+                
+            })();
+        </script>
+    </body>
+</html>

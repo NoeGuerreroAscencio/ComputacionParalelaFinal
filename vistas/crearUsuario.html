@@ -1,0 +1,34 @@
+<div class="centrado">
+    <div class="barra">
+        <h2 class="textoBarra">Crear usuarioo</h2>
+    </div>
+    <form action="acciones/crear-usuario" method="post" class="inline-block">
+        <table>
+            <tr>
+                <td class="izquierda">Nombre</td>
+                <td><input class="input-form" name="nombre" placeholder="Ingresa el nombre" required="" /></td>
+            </tr>
+            <tr>
+                <td class="izquierda">Apellidos</td>
+                <td><input class="input-form" name="apellidos" placeholder="Ingresa los apellidos" /></td>
+            </tr>
+            <tr>
+                <td class="izquierda">Género</td>
+                <td>
+                    <select class="input-form" name="genero" required="" title="Elije un género de la lista">
+                        <option value="">Elija una opción</option>
+                        <option value="HOMBRE">Hombre</option>
+                        <option value="MUJER">Mujer</option>
+                        <option value="OTRO">Otro</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="izquierda">Edad</td>
+                <td><input class="input-form" name="edad" type="number" placeholder="Ingresa la edad" required="" /></td>
+            </tr>
+        </table>
+        <input type="submit" value="Guardar" class="boton boton-verde" />
+    </form>
+</div>
+

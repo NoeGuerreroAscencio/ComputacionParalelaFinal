@@ -1,0 +1,28 @@
+version: "2"
+services:
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    container_name: mysqlapp
+    environment:
+      MYSQL_ROOT_PASSWORD: 1test2
+      MYSQL_DATABASE: usuarios
+    volumes:
+      - /home/noe/volume:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d/:ro
+      
+  app:
+    build: ./
+    links:
+      - db
+    container_name: phpapp
+    ports:
+      - "5600:80"
+  adminer:
+    image: adminer
+    ports:
+      -  "8080:8080"
+    container_name: phpapp_adminer
+
+
